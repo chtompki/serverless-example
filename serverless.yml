@@ -1,0 +1,21 @@
+service: chtompki-serverless-example-api
+
+frameworkVersion: '2'
+
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: '20201221'
+  ## IMPORTANT: Serverless will create your own bucket for you if you don't declare one for it to use.
+  deploymentBucket:
+    name: chtompki-serverless-deployments
+    serverSideEncryption: AES256
+
+functions:
+  hello:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: /
+          method: post
