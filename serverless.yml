@@ -11,10 +11,17 @@ provider:
   deploymentBucket:
     name: chtompki-serverless-deployments
     serverSideEncryption: AES256
+  ## If you disableLogs: true, then you also need to provide your own IAM role (Which is already good form)
+  iam:
+    role: 'arn:aws:iam::409543137833:role/lambda_basic_execution'
 
 functions:
   hello:
     handler: lambda_function.lambda_handler
+    ## Stops cloudformation from creating the log group (lambda will do this by default). Makes for easier
+    ## re-provisioning as well as maintains log integrity by not deleting the log group ever.
+    ## IMPORTANT: requires you to make your own IAM role as serverless cannot handle this.
+    disableLogs: true
     events:
       - http:
           path: /
